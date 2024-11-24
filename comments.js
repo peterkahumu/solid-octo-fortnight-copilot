@@ -1,34 +1,29 @@
-// create a web server
-
-// import express
+// create web server
 const express = require('express');
 const app = express();
+const port = 3000;
 
-// import body-parser
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+// allow cross origin resource sharing
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 
-// import comments.js
-const comments = require('./comments');
-
-// import cors
-const cors = require('cors');
-app.use(cors());
-
-// get all comments
+// get comments
 app.get('/comments', (req, res) => {
-  const allComments = comments.getAllComments();
-  res.json(allComments);
+    res.json([
+        {
+            id: 1,
+            content: 'Hello World!'
+        },
+        {
+            id: 2,
+            content: 'Goodbye World!'
+        }
+    ]);
 });
 
-// post a new comment
-app.post('/comments', (req, res) => {
-  const newComment = req.body;
-  comments.addComment(newComment);
-  res.json(newComment);
-});
-
-// listen on port 3000
-app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
+// start server
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
 });
